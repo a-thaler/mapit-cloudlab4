@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kyma meets CCV2 </title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {   
+          var map = new google.maps.Map(document.getElementById('map'), { zoom: 1 });
+          var geocoder = new google.maps.Geocoder();       
+          var request = new XMLHttpRequest();
+
+          request.open('GET', 'https://kyma20181116a.blissful-jepsen.cluster.extend.sap.cx/orders', true);
+          request.send()
+          request.onload = function () {
+            var data = JSON.parse(this.response);
+            if (request.status >= 200 && request.status < 400) {
+              data.forEach(order => {
+                console.log( "TTTown "+ order["town"]+" postalCode "+ order["postalCode"]) 
+                geocodeAddress(geocoder, map, order["postalCode"]+","+order["town"]);
+              });
+            } 
+          }
+      }
+
+      function geocodeAddress(geocoder, resultsMap, address) {
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } 
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbmqd7Lh9hI3OI7zI_cP8spDNQMehdcfs&callback=initMap">
+    </script>
+  </body>
+</html>
