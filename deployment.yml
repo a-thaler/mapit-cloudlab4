@@ -11,7 +11,7 @@ spec:
       # Port accessible inside cluster
       port: 80
       # Port to forward to inside the pod
-      targetPort: 8000
+      targetPort: 3001
       # Port accessible outside cluster
       nodePort: 30002
   type: LoadBalancer
@@ -30,8 +30,8 @@ spec:
     spec:
       containers:
         - name: cloudlab4
-          image: kenlomax/orders-cloudlab4:latest
+          image: kenlomax/mapit-cloudlab4:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8000
+            - containerPort: 3001
 

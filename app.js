@@ -1,4 +1,5 @@
 // Based on https://gist.github.com/jeffdonthemic/87b542cc09864fe203f4
+// sudo npm install xmlhttprequest
 // sudo npm install socket.io
 // node app.js
 

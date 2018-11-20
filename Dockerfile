@@ -1,4 +1,12 @@
+FROM node:8
+WORKDIR /usr/src/app
+COPY . .
+RUN npm install xmlhttprequest
+RUN npm install socket.io
+CMD [ "node", "app.js" ]
+
 # Based on https://github.com/nishanttotla/DockerStaticSite
-FROM nginx:alpine
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
+# For a normal index.html use this instead..
+#FROM nginx:alpine
+#COPY default.conf /etc/nginx/conf.d/default.conf
+#COPY index.html /usr/share/nginx/html/index.html
