@@ -14,18 +14,6 @@ var homepage = fs.readFileSync(__dirname + '/index.html'); // NEVER use a Sync f
 let kyma_env = "notyetset"
 let orders_endpoint ="notyetset"
 
-function updateClients(endpoint) {
-	console.log("updateClients" + endpoint)
-	xhr.open('GET', endpoint+'?_=' + new Date().getTime(), true); // To prevent caching
-	xhr.send()
-	xhr.onload = function () {
-		if (xhr.status >= 200 && xhr.status < 400) {
-			nextjson = xhr.responseText;
-			console.log("updatemap")
-			io.sockets.emit('updatemap', JSON.parse(nextjson) );
-		} 
-	}
-}
 
 // Send index.html to all requests
 var app = http.createServer(function(req, res) {
@@ -41,6 +29,28 @@ var app = http.createServer(function(req, res) {
 	setInterval( function() { updateClients(orders_endpoint); }, 5000 ); 
 });
 
+
 var io = require('socket.io').listen(app);
+
+function updateClients(endpoint) {
+	console.log("updateClients" + endpoint)
+
+	xhr.open('GET', endpoint+'?_=' + new Date().getTime(), true); // To prevent caching
+	xhr.send()
+	xhr.onload = function () {
+		if (xhr.status >= 200 && xhr.status < 400) {
+			nextjson = xhr.responseText;
+			console.log("updatemap")
+			io.sockets.emit('updatemap', JSON.parse(nextjson) );
+		} else 
+		{			
+			console.log("Error status "+xhr.status )
+		} 
+	}
+	xhr.onerror= function(e) {
+        console.log("Error fetching " + endpoint);
+    };
+}
+
 
 app.listen(3001);
