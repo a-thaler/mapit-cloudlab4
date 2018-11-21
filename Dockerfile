@@ -1,8 +1,7 @@
 FROM node:8
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install xmlhttprequest
-RUN npm install socket.io
+RUN npm install xmlhttprequest socket.io underscore
 CMD [ "node", "app.js" ]
 
 # Based on https://github.com/nishanttotla/DockerStaticSite

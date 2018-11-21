@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <style>
     #map {
-      height: 100%;
+      height: 80%;
     }
     /* Optional: Makes the sample page fill the window. */
     html, body {
-      height: 100%;
+      height: 80%;
       margin: 0;
       padding: 0;
     }
   </style>
   <script src='http://code.jquery.com/jquery-1.7.2.min.js'></script>
-  <script src='http://localhost:3001/socket.io/socket.io.js'></script>      
+  <script src='/socket.io/socket.io.js'></script>      
 </head>
 <body>
   <div><p>
@@ -27,7 +27,10 @@
     More @ <a href="https://wiki.hybris.com/display/prodandtech/Cloud+Lab+4%3A+Kyma+meets+CCV2">CloudLab4</a> </p></div>
     <div id="map"></div>
     <script>
-      var socket = io.connect('http://localhost:3001');
+      var socket = io.connect();//'http://localhost:3001');
+      var markers = [];
+      var markerLocations = [];
+
       socket.on('updatemap', function(data) {
         addOrders(data)
       });
@@ -36,13 +39,12 @@
       let geocoder = "notyetdefined"  
 
       function initMap() {   
-        console.log("In initmap")
         googlemap = new google.maps.Map(document.getElementById('map'), { zoom: 1 });
         geocoder = new google.maps.Geocoder();     
-        console.log("Exiting initmap")
       }
 
       function addOrders(newOrders) {
+        console.log( "addOrders "+newOrders)
         newOrders.forEach(order => {
           console.log( "TTTown "+ order["town"]+" postalCode "+ order["postalCode"]) 
           addOrderToMap( order["postalCode"]+","+order["town"]);
@@ -52,11 +54,19 @@
       function addOrderToMap( address) {
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
-            googlemap.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-              map: googlemap,
-              position: results[0].geometry.location
-            });
+            var location = results[0].geometry.location
+            if (markerLocations.includes(""+location)){
+            }
+            else{
+              var marker = new google.maps.Marker({
+                map: googlemap,
+                position: location
+              });
+              googlemap.setCenter(location);
+              console.log("results[0].geometry.location "+location)
+              markers.push(marker);
+              markerLocations.push(""+location);
+            }
           } 
         });
       }
