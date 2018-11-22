@@ -15,7 +15,6 @@ let kyma_env = "notyetset"
 let orders_endpoint ="notyetset"
 
 
-// Send index.html to all requests
 var app = http.createServer(function(req, res) {
 	// Get kyma_env from URL
 	var q = url.parse(req.url, true).query 
@@ -30,15 +29,14 @@ var app = http.createServer(function(req, res) {
 	orders_endpoint = "https://"+kyma_env+"."+kyma_cluster+".cluster.extend.sap.cx/orders"	
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	res.end(homepage);
+
+	// Periodically call updateClients
 	setInterval( function() { updateClients(orders_endpoint); }, 5000 ); 
 });
-
 
 var io = require('socket.io').listen(app);
 
 function updateClients(endpoint) {
-	console.log("updateClients" + endpoint)
-
 	xhr.open('GET', endpoint+'?_=' + new Date().getTime(), true); // To prevent caching
 	xhr.send()
 	xhr.onload = function () {
@@ -55,6 +53,5 @@ function updateClients(endpoint) {
         console.log("Error fetching " + endpoint);
     };
 }
-
 
 app.listen(3001);
