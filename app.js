@@ -23,7 +23,11 @@ var app = http.createServer(function(req, res) {
 		kyma_env = q.kyma_env;
 	console.log("kyma_env "+kyma_env)
 
-	orders_endpoint = "https://"+kyma_env+".blissful-jepsen.cluster.extend.sap.cx/orders"	
+	if (typeof q.kyma_cluster !== 'undefined' && q.kyma_cluster )
+		kyma_cluster = q.kyma_cluster;
+	console.log("kyma_cluster "+kyma_cluster)
+
+	orders_endpoint = "https://"+kyma_env+"."+kyma_cluster+".cluster.extend.sap.cx/orders"	
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	res.end(homepage);
 	setInterval( function() { updateClients(orders_endpoint); }, 5000 ); 
