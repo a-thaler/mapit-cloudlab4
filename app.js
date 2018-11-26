@@ -1,6 +1,12 @@
 // Based on https://gist.github.com/jeffdonthemic/87b542cc09864fe203f4
+// This usually runs in a Docker container 
+// 
+// To run locally you need to have npm and run
 // npm install xmlhttprequest socket.io app.js
+// Then
 // node app.js
+// and access
+// localhost:3001/?<coolEnvironmentName>/<kymaClusterName> 
 
 var http = require('http');
 var fs = require('fs');
