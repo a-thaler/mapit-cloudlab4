@@ -52,4 +52,4 @@ spec:
     - destination:
         host: cloudlab4
         port:
-          number: 80
+          number: 3001
