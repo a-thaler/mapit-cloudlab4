@@ -44,6 +44,8 @@ metadata:
 spec:
   gateways:
   - kyma-gateway
+  hosts:
+  - cloudlab4
   http:
   - match:
     - uri:
