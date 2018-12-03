@@ -43,7 +43,7 @@ metadata:
   name: cloudlab4
 spec:
   gateways:
-  - kyma-gateway
+  - kyma-gateway.kyma-system.svc.cluster.local
   hosts:
   - cloudlab4
   http:
