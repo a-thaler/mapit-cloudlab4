@@ -37,7 +37,7 @@ spec:
 
 ---
 
-apiVersion: gateway.kyma.cx/v1alpha2
+apiVersion: gateway.kyma-project.cx/v1alpha2
 kind: Api
 metadata:
   labels:
