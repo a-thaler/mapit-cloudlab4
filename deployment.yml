@@ -19,8 +19,10 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: cloudlab4
+  labels:
+    app: cloudlab4
 spec:
-  replicas: 4
+  replicas: 1
   template:
     metadata:
       labels:
@@ -35,23 +37,14 @@ spec:
 
 ---
 
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+apiVersion: gateway.kyma.cx/v1alpha2
+kind: Api
 metadata:
   labels:
     app: cloudlab4
   name: cloudlab4
 spec:
-  gateways:
-  - kyma-gateway.kyma-system.svc.cluster.local
-  hosts:
-  - cloudlab4
-  http:
-  - match:
-    - uri:
-        regex: /.*
-    route:
-    - destination:
-        host: cloudlab4
-        port:
-          number: 3001
+  hostname: cloudlab4
+  service:
+    name: cloudlab4
+    port: 3000
